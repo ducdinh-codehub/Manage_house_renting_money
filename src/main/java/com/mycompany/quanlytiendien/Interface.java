@@ -16,12 +16,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -106,7 +112,27 @@ public class Interface implements KeyListener{
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?","Warning",dialogButton);
                 if(rst == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null, "Saving success");
+                    BufferedWriter bw = null;
+                    try {
+                        JOptionPane.showMessageDialog(null, "Saving success");
+                        File f = new File("source.htm");
+                        bw = new BufferedWriter(new FileWriter(f));
+                        bw.write("<html><body><h1>Renting House Bill</h1>");
+                        //bw.write("<textarea cols=75 rows=10>");
+                        //for (int ii=0; ii<20; ii++) {
+                        //    bw.write("Blah blah..");
+                        //}   bw.write("</textarea>");
+                        bw.write("</body></html>");
+                        bw.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        try {
+                            bw.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
                 
             }
