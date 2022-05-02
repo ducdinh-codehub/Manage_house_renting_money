@@ -107,8 +107,9 @@ public class Interface implements KeyListener{
                 int startNum = Integer.parseInt(Start_num_elec.getText());
                 int endNum = Integer.parseInt(End_num_elec.getText());
                 int totalNum = endNum - startNum;
-                int totalMoney = ElectricStandardCount * totalNum;
-                Electric.setText(String.valueOf(totalMoney));
+                int totalElectricMoney = ElectricStandardCount * totalNum;
+                int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
+                Electric.setText(String.valueOf(totalElectricMoney));
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?","Warning",dialogButton);
                 if(rst == JOptionPane.YES_OPTION){
@@ -118,10 +119,21 @@ public class Interface implements KeyListener{
                         File f = new File("source.htm");
                         bw = new BufferedWriter(new FileWriter(f));
                         bw.write("<html><body><h1>Renting House Bill</h1>");
-                        //bw.write("<textarea cols=75 rows=10>");
-                        //for (int ii=0; ii<20; ii++) {
-                        //    bw.write("Blah blah..");
-                        //}   bw.write("</textarea>");
+                        bw.write("<br>Date: "+Date.getText());
+                        bw.write("<br>Internet money: "+Internet.getText());
+                        bw.write("<br>Internet money: "+Water.getText());
+                        bw.write("<h3>Electric bill ("+String.valueOf(ElectricStandardCount)+" vnd per number):</h3>");
+                        bw.write("<br><ul>");
+                        bw.write("<li>Start count number: "+Start_num_elec.getText()+"</li>");
+                        bw.write("<li>End count number: "+End_num_elec.getText()+"</li>");
+                        bw.write("</ul>");
+                        bw.write("<br>Total count number: "+String.valueOf(totalNum));
+                        bw.write("<br>Total electric money: "+String.valueOf(totalElectricMoney));
+                        bw.write("<br>Gabarge money: "+Gabarge.getText());
+                        bw.write("<h3>Total money: "+String.valueOf(totalMoney)+"</h3>");
+                        bw.write("<br>Receiver name: "+ReceiverName);
+                        bw.write("<br>Receiver bank account: "+ReceiverBankAccount);
+                        bw.write("<br><img src='./Test_signature.jpg'>");
                         bw.write("</body></html>");
                         bw.close();
                     } catch (IOException ex) {
