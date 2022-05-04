@@ -136,6 +136,7 @@ public class Interface implements KeyListener{
                         bw.write("<br><img src='./Test_signature.jpg'>");
                         bw.write("</body></html>");
                         bw.close();
+                        
                     } catch (IOException ex) {
                         Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                     } finally {
