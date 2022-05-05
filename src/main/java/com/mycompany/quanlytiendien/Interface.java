@@ -113,6 +113,15 @@ public class Interface implements KeyListener{
         Gabarge.addKeyListener(this);
         Gabarge.setText("10000");
         
+        JLabel Total_money_label = new JLabel();
+        Total_money_label.setText("Total money");
+        JTextField Total_money = new JTextField(20);
+        JTextField Total_money_hidden_field = new JTextField(20);
+        Total_money_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        Total_money_hidden_field.setEditable(false);
+        Total_money.setEditable(false);
+        Total_money.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        
         GridBagLayout layout = new GridBagLayout();
         MainPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -267,8 +276,19 @@ public class Interface implements KeyListener{
         gbc.gridy = 10;
         MainPanel.add(Gabarge_hidden_field, gbc);
         
+        gbc.gridx = 0;
+        gbc.gridy = 11;
+        MainPanel.add(Total_money_label, gbc);
         gbc.gridx = 1;
         gbc.gridy = 11;
+        MainPanel.add(Total_money, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 12;
+        MainPanel.add(Total_money_hidden_field, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 13;
         MainPanel.add(submitBtb, gbc);
         
         MainFrame.setJMenuBar(MainMenu);
