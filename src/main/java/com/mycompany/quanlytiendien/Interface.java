@@ -43,45 +43,7 @@ public class Interface implements KeyListener{
         JFrame MainFrame = new JFrame("Main frame");
         JPanel MainPanel = new JPanel();
         
-        JMenuBar MainMenu = new JMenuBar();
-        JMenu Menu = new JMenu();
-        Menu.setText("Tools");
-        JMenuItem ItemMenu1 = new JMenuItem();
-        JMenuItem ItemMenu2 = new JMenuItem();
-        JMenuItem ItemMenu3 = new JMenuItem();
-        JMenuItem ItemMenu4 = new JMenuItem();
-        
-        ItemMenu2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setReceiverInformationInterface();
-            }
-        });
-        
-        ItemMenu3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setStandardElectricCountInterface(); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
-        
-        ItemMenu4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setEdittingRentingHomeMoneyInterface();
-            }
-        });
-        
-        ItemMenu1.setText("List all");
-        ItemMenu2.setText("Editting receiver's information");
-        ItemMenu3.setText("Configure standard electric count");
-        ItemMenu4.setText("Editting renting home money");
-        
-        Menu.add(ItemMenu1);
-        Menu.add(ItemMenu4);
-        Menu.add(ItemMenu2);
-        Menu.add(ItemMenu3);
-        MainMenu.add(Menu);
+
         
         JTextField Date = new JTextField(20);
         Date.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -141,6 +103,49 @@ public class Interface implements KeyListener{
         Total_money.setEditable(false);
         Total_money.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
+        JMenuBar MainMenu = new JMenuBar();
+        JMenu Menu = new JMenu();
+        Menu.setText("Tools");
+        JMenuItem ItemMenu1 = new JMenuItem();
+        JMenuItem ItemMenu2 = new JMenuItem();
+        JMenuItem ItemMenu3 = new JMenuItem();
+        JMenuItem ItemMenu4 = new JMenuItem();
+        
+        ItemMenu2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setReceiverInformationInterface();
+            }
+        });
+        
+        ItemMenu3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setStandardElectricCountInterface(); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        
+        ItemMenu4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setEdittingRentingHomeMoneyInterface(Renting_home_money);
+                //if(rst == 1){
+                //    Renting_home_money.setText(RentingMoney);
+                //}
+            }
+        });
+        
+        ItemMenu1.setText("List all");
+        ItemMenu2.setText("Editting receiver's information");
+        ItemMenu3.setText("Configure standard electric count");
+        ItemMenu4.setText("Editting renting home money");
+        
+        Menu.add(ItemMenu1);
+        Menu.add(ItemMenu4);
+        Menu.add(ItemMenu2);
+        Menu.add(ItemMenu3);
+        MainMenu.add(Menu);
+        
         GridBagLayout layout = new GridBagLayout();
         MainPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -160,7 +165,7 @@ public class Interface implements KeyListener{
                         int totalNum = endNum - startNum;
                         int totalElectricMoney = ElectricStandardCount * totalNum;
                         Electric.setText(String.valueOf(totalElectricMoney));
-                        int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
+                        int totalMoney = Integer.parseInt(RentingMoney) + totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
                         Total_money.setText(standardMoneyDisplay(totalMoney));
                         
                         int Electric_display_hidden = totalElectricMoney;
@@ -183,7 +188,7 @@ public class Interface implements KeyListener{
                                 JOptionPane.showMessageDialog(null, "Saving success");
                                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
                                 LocalDateTime now = LocalDateTime.now();
-                                File f = new File(dtf.format(now)+"_renting_bill.htm");
+                                File f = new File("./bill"+dtf.format(now)+"_renting_bill.htm");
                                 bw = new BufferedWriter(new FileWriter(f));
                                 bw.write("<html><body><h1>Renting House Bill</h1>");
                                 bw.write("<br>Date: "+Date.getText());
@@ -201,7 +206,6 @@ public class Interface implements KeyListener{
                                 bw.write("<h3>Total money: "+standardMoneyDisplay(totalMoney)+"</h3>");
                                 bw.write("<br>Receiver name: "+ReceiverName);
                                 bw.write("<br>Receiver bank account: "+ReceiverBankAccount);
-                                bw.write("<br><img src='./Test_signature.jpg' width='350' height='350'>");
                                 bw.write("</body></html>");
                                 bw.close();
 
@@ -349,7 +353,7 @@ public class Interface implements KeyListener{
         return str + " vnds";
     }
     
-    public void setEdittingRentingHomeMoneyInterface(){
+    public void setEdittingRentingHomeMoneyInterface(JTextField rentingMoneyField){
         JFrame SubFrame3 = new JFrame("");
         JPanel SubPanel3 = new JPanel();
         JLabel label_new_renting_home =  new JLabel();
@@ -364,6 +368,18 @@ public class Interface implements KeyListener{
         old_renting_home.setText(RentingMoney);
         JButton SubSubmitBtn = new JButton();
         SubSubmitBtn.setText("Save");
+        SubSubmitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               int buttonDialog = JOptionPane.YES_NO_OPTION;
+               int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?", "Warning", buttonDialog);
+               if(rst == JOptionPane.YES_OPTION){
+                   RentingMoney = new_renting_home.getText();
+                   old_renting_home.setText(RentingMoney);
+                   rentingMoneyField.setText(RentingMoney);
+               }
+            }
+        });
         old_renting_home.setEditable(false);
         GridBagLayout layout = new GridBagLayout();
         SubPanel3.setLayout(layout);
@@ -383,6 +399,10 @@ public class Interface implements KeyListener{
         gbc.gridx = 1;
         gbc.gridy = 1;
         SubPanel3.add(new_renting_home, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        SubPanel3.add(SubSubmitBtn, gbc);
         
         SubFrame3.setSize(350, 400);
         SubFrame3.add(SubPanel3);
