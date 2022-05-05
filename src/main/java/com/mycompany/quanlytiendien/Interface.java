@@ -127,11 +127,23 @@ public class Interface implements KeyListener{
                 && Water.getText().length() != 0 && Gabarge.getText().length() != 0 && Internet.getText().length() != 0){
                     int startNum = Integer.parseInt(Start_num_elec.getText());
                     int endNum = Integer.parseInt(End_num_elec.getText());
+                    
                     if(endNum > startNum){
                         int totalNum = endNum - startNum;
                         int totalElectricMoney = ElectricStandardCount * totalNum;
                         int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
                         Electric.setText(String.valueOf(totalElectricMoney));
+                        
+                        int Electric_display_hidden = totalElectricMoney;
+                        int Water_display_hidden = Integer.parseInt(Water.getText());
+                        int Gabarge_display_hidden = Integer.parseInt(Gabarge.getText());
+                        int Internet_display_hidden = Integer.parseInt(Internet.getText());
+                        
+                        Electric_hidden_field.setText(standardMoneyDisplay(Electric_display_hidden));
+                        Water_hidden_field.setText(standardMoneyDisplay(Water_display_hidden));
+                        Internet_hidden_field.setText(standardMoneyDisplay(Internet_display_hidden));
+                        Gabarge_hidden_field.setText(standardMoneyDisplay(Gabarge_display_hidden));
+                                
                         int dialogButton = JOptionPane.YES_NO_OPTION;
                         int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?","Warning",dialogButton);
                         if(rst == JOptionPane.YES_OPTION){
@@ -266,6 +278,24 @@ public class Interface implements KeyListener{
         MainFrame.setVisible(true);
         
         
+    }
+    
+    public String standardMoneyDisplay(int money){
+        String str = "";
+        String tmp = "";
+        int a;
+        int b = money;
+        while(b != 0){
+            a = b % 10;
+            b = b / 10;
+            str = a + str;
+            tmp = a + tmp;
+            if(tmp.length() == 3){
+                str = '.' + str;
+                tmp = "";
+            }
+        }
+        return str + " vnds";
     }
     
     public void setReceiverInformationInterface(){
