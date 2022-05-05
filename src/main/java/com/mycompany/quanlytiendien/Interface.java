@@ -38,6 +38,7 @@ public class Interface implements KeyListener{
     int ElectricStandardCount = 3500;
     String ReceiverName = "Nguyen Van A";
     String ReceiverBankAccount = "01234567891011";
+    String RentingMoney = "1700000";
     public void setInterface(){
         JFrame MainFrame = new JFrame("Main frame");
         JPanel MainPanel = new JPanel();
@@ -78,6 +79,17 @@ public class Interface implements KeyListener{
         LocalDateTime now = LocalDateTime.now();
         Date.setText(dtf.format(now));
         Date.setEditable(false);
+        
+        JLabel Label_renting_home_money = new JLabel();
+        Label_renting_home_money.setText("Renting money");
+        JTextField Renting_home_money = new JTextField(20);
+        JTextField Hidden_renting_home_money = new JTextField(20);
+        
+        Hidden_renting_home_money.setEditable(false);
+        Hidden_renting_home_money.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        Renting_home_money.addKeyListener(this);
+        Renting_home_money.setText(RentingMoney);
+        Renting_home_money.setEditable(false);
         
         JTextField Start_num_elec = new JTextField(20);
         Start_num_elec.addKeyListener(this);
@@ -142,10 +154,12 @@ public class Interface implements KeyListener{
                         Total_money.setText(standardMoneyDisplay(totalMoney));
                         
                         int Electric_display_hidden = totalElectricMoney;
+                        int Renting_money_display_hidden = Integer.parseInt(Renting_home_money.getText());
                         int Water_display_hidden = Integer.parseInt(Water.getText());
                         int Gabarge_display_hidden = Integer.parseInt(Gabarge.getText());
                         int Internet_display_hidden = Integer.parseInt(Internet.getText());
                         
+                        Hidden_renting_home_money.setText(standardMoneyDisplay(Renting_money_display_hidden));
                         Electric_hidden_field.setText(standardMoneyDisplay(Electric_display_hidden));
                         Water_hidden_field.setText(standardMoneyDisplay(Water_display_hidden));
                         Internet_hidden_field.setText(standardMoneyDisplay(Internet_display_hidden));
@@ -163,8 +177,9 @@ public class Interface implements KeyListener{
                                 bw = new BufferedWriter(new FileWriter(f));
                                 bw.write("<html><body><h1>Renting House Bill</h1>");
                                 bw.write("<br>Date: "+Date.getText());
+                                bw.write("<br>Renting home money: "+standardMoneyDisplay(Renting_money_display_hidden));
                                 bw.write("<br>Internet money: "+standardMoneyDisplay(Internet_display_hidden));
-                                bw.write("<br>Internet money: "+standardMoneyDisplay(Water_display_hidden));
+                                bw.write("<br>Water money: "+standardMoneyDisplay(Water_display_hidden));
                                 bw.write("<h3>Electric bill ("+String.valueOf(ElectricStandardCount)+" vnd per number):</h3>");
                                 bw.write("<br><ul>");
                                 bw.write("<li>Start count number: "+Start_num_elec.getText()+"</li>");
@@ -224,67 +239,77 @@ public class Interface implements KeyListener{
         
         gbc.gridx = 0;
         gbc.gridy = 1;
-        MainPanel.add(Internet_label, gbc);
+        MainPanel.add(Label_renting_home_money, gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        MainPanel.add(Internet, gbc);
+        MainPanel.add(Renting_home_money, gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
+        MainPanel.add(Hidden_renting_home_money, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        MainPanel.add(Internet_label, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        MainPanel.add(Internet, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         MainPanel.add(Internet_hidden_field, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         MainPanel.add(Water_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         MainPanel.add(Water, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         MainPanel.add(Water_hidden_field, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         MainPanel.add(Start_num_elec_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         MainPanel.add(Start_num_elec, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         MainPanel.add(End_num_elec_label,gbc);
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         MainPanel.add(End_num_elec,gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         MainPanel.add(Electric_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         MainPanel.add(Electric, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 8;
+        gbc.gridy = 10;
         MainPanel.add(Electric_hidden_field, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 9;
+        gbc.gridy = 11;
         MainPanel.add(Gabarge_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 9;
+        gbc.gridy = 11;
         MainPanel.add(Gabarge, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 10;
+        gbc.gridy = 12;
         MainPanel.add(Gabarge_hidden_field, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 11;
+        gbc.gridy = 13;
         MainPanel.add(Total_money_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 11;
+        gbc.gridy = 13;
         MainPanel.add(Total_money, gbc);
         
         gbc.gridx = 1;
-        gbc.gridy = 12;
+        gbc.gridy = 14;
         MainPanel.add(submitBtb, gbc);
         
         MainFrame.setJMenuBar(MainMenu);
