@@ -49,6 +49,7 @@ public class Interface implements KeyListener{
         JMenuItem ItemMenu1 = new JMenuItem();
         JMenuItem ItemMenu2 = new JMenuItem();
         JMenuItem ItemMenu3 = new JMenuItem();
+        JMenuItem ItemMenu4 = new JMenuItem();
         
         ItemMenu2.addActionListener(new ActionListener() {
             @Override
@@ -64,11 +65,20 @@ public class Interface implements KeyListener{
             }
         });
         
+        ItemMenu4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setEdittingRentingHomeMoneyInterface();
+            }
+        });
+        
         ItemMenu1.setText("List all");
         ItemMenu2.setText("Editting receiver's information");
         ItemMenu3.setText("Configure standard electric count");
+        ItemMenu4.setText("Editting renting home money");
         
         Menu.add(ItemMenu1);
+        Menu.add(ItemMenu4);
         Menu.add(ItemMenu2);
         Menu.add(ItemMenu3);
         MainMenu.add(Menu);
@@ -339,6 +349,46 @@ public class Interface implements KeyListener{
         return str + " vnds";
     }
     
+    public void setEdittingRentingHomeMoneyInterface(){
+        JFrame SubFrame3 = new JFrame("");
+        JPanel SubPanel3 = new JPanel();
+        JLabel label_new_renting_home =  new JLabel();
+        JLabel label_old_renting_home = new JLabel();
+        
+        JTextField new_renting_home = new JTextField(20);
+        JTextField old_renting_home = new JTextField(20);
+        
+        label_new_renting_home.setText("New renting money");
+        label_old_renting_home.setText("Renting money");
+        
+        old_renting_home.setText(RentingMoney);
+        JButton SubSubmitBtn = new JButton();
+        SubSubmitBtn.setText("Save");
+        old_renting_home.setEditable(false);
+        GridBagLayout layout = new GridBagLayout();
+        SubPanel3.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        SubPanel3.add(label_old_renting_home, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        SubPanel3.add(old_renting_home, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        SubPanel3.add(label_new_renting_home, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        SubPanel3.add(new_renting_home, gbc);
+        
+        SubFrame3.setSize(350, 400);
+        SubFrame3.add(SubPanel3);
+        SubFrame3.setVisible(true);
+    }
+    
     public void setReceiverInformationInterface(){
         JFrame SubFrame2 = new JFrame("");
         JPanel SubPanel2 = new JPanel();
@@ -428,6 +478,8 @@ public class Interface implements KeyListener{
         SubFrame2.setSize(350, 400);
         SubFrame2.setVisible(true);
     }
+    
+ 
     
     public void setStandardElectricCountInterface(){
             JFrame SubFrame = new JFrame("Sub frame");
