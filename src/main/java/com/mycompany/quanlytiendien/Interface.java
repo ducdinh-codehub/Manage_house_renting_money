@@ -73,27 +73,46 @@ public class Interface implements KeyListener{
         MainMenu.add(Menu);
         
         JTextField Date = new JTextField(20);
+        Date.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         Date.setText(dtf.format(now));
         Date.setEditable(false);
+        
         JTextField Start_num_elec = new JTextField(20);
         Start_num_elec.addKeyListener(this);
         JTextField End_num_elec = new JTextField(20);
         End_num_elec.addKeyListener(this);
+        
         JTextField Electric = new JTextField(20);
+        Electric.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        JTextField Electric_hidden_field = new JTextField(20);
+        Electric_hidden_field.setEditable(false);
+        Electric_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         Electric.addKeyListener(this);
         Electric.setEditable(false);
-        Electric.setText("......");
+        
         JTextField Water = new JTextField(20);
+        JTextField Water_hidden_field = new JTextField(20);
+        Water_hidden_field.setEditable(false);
+        Water_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         Water.addKeyListener(this);
         Water.setText("80000");
+        
         JTextField Internet = new JTextField(20);
+        JTextField Internet_hidden_field = new JTextField(20);
+        Internet_hidden_field.setEditable(false);
+        Internet_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         Internet.addKeyListener(this);
         Internet.setText("80000");
+        
         JTextField Gabarge = new JTextField(20);
+        JTextField Gabarge_hidden_field = new JTextField(20);
+        Gabarge_hidden_field.setEditable(false);
+        Gabarge_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         Gabarge.addKeyListener(this);
         Gabarge.setText("10000");
+        
         GridBagLayout layout = new GridBagLayout();
         MainPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,50 +123,58 @@ public class Interface implements KeyListener{
         submitBtb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int startNum = Integer.parseInt(Start_num_elec.getText());
-                int endNum = Integer.parseInt(End_num_elec.getText());
-                int totalNum = endNum - startNum;
-                int totalElectricMoney = ElectricStandardCount * totalNum;
-                int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
-                Electric.setText(String.valueOf(totalElectricMoney));
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?","Warning",dialogButton);
-                if(rst == JOptionPane.YES_OPTION){
-                    BufferedWriter bw = null;
-                    try {
-                        JOptionPane.showMessageDialog(null, "Saving success");
-                        File f = new File("source.htm");
-                        bw = new BufferedWriter(new FileWriter(f));
-                        bw.write("<html><body><h1>Renting House Bill</h1>");
-                        bw.write("<br>Date: "+Date.getText());
-                        bw.write("<br>Internet money: "+Internet.getText());
-                        bw.write("<br>Internet money: "+Water.getText());
-                        bw.write("<h3>Electric bill ("+String.valueOf(ElectricStandardCount)+" vnd per number):</h3>");
-                        bw.write("<br><ul>");
-                        bw.write("<li>Start count number: "+Start_num_elec.getText()+"</li>");
-                        bw.write("<li>End count number: "+End_num_elec.getText()+"</li>");
-                        bw.write("</ul>");
-                        bw.write("<br>Total count number: "+String.valueOf(totalNum));
-                        bw.write("<br>Total electric money: "+String.valueOf(totalElectricMoney));
-                        bw.write("<br>Gabarge money: "+Gabarge.getText());
-                        bw.write("<h3>Total money: "+String.valueOf(totalMoney)+"</h3>");
-                        bw.write("<br>Receiver name: "+ReceiverName);
-                        bw.write("<br>Receiver bank account: "+ReceiverBankAccount);
-                        bw.write("<br><img src='./Test_signature.jpg'>");
-                        bw.write("</body></html>");
-                        bw.close();
-                        
-                    } catch (IOException ex) {
-                        Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-                    } finally {
-                        try {
-                            bw.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                if(Start_num_elec.getText().length() != 0 && End_num_elec.getText().length() != 0
+                && Water.getText().length() != 0 && Gabarge.getText().length() != 0 && Internet.getText().length() != 0){
+                    int startNum = Integer.parseInt(Start_num_elec.getText());
+                    int endNum = Integer.parseInt(End_num_elec.getText());
+                    if(endNum > startNum){
+                        int totalNum = endNum - startNum;
+                        int totalElectricMoney = ElectricStandardCount * totalNum;
+                        int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
+                        Electric.setText(String.valueOf(totalElectricMoney));
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?","Warning",dialogButton);
+                        if(rst == JOptionPane.YES_OPTION){
+                            BufferedWriter bw = null;
+                            try {
+                                JOptionPane.showMessageDialog(null, "Saving success");
+                                File f = new File("source.htm");
+                                bw = new BufferedWriter(new FileWriter(f));
+                                bw.write("<html><body><h1>Renting House Bill</h1>");
+                                bw.write("<br>Date: "+Date.getText());
+                                bw.write("<br>Internet money: "+Internet.getText());
+                                bw.write("<br>Internet money: "+Water.getText());
+                                bw.write("<h3>Electric bill ("+String.valueOf(ElectricStandardCount)+" vnd per number):</h3>");
+                                bw.write("<br><ul>");
+                                bw.write("<li>Start count number: "+Start_num_elec.getText()+"</li>");
+                                bw.write("<li>End count number: "+End_num_elec.getText()+"</li>");
+                                bw.write("</ul>");
+                                bw.write("<br>Total count number: "+String.valueOf(totalNum));
+                                bw.write("<br>Total electric money: "+String.valueOf(totalElectricMoney));
+                                bw.write("<br>Gabarge money: "+Gabarge.getText());
+                                bw.write("<h3>Total money: "+String.valueOf(totalMoney)+"</h3>");
+                                bw.write("<br>Receiver name: "+ReceiverName);
+                                bw.write("<br>Receiver bank account: "+ReceiverBankAccount);
+                                bw.write("<br><img src='./Test_signature.jpg' width='350' height='350'>");
+                                bw.write("</body></html>");
+                                bw.close();
+
+                            } catch (IOException ex) {
+                                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                            } finally {
+                                try {
+                                    bw.close();
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
                         }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Please check, Start count number cannot greater than End count number");
                     }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Please check, cannot leave empty field");
                 }
-                
             }
         });
         
@@ -173,44 +200,63 @@ public class Interface implements KeyListener{
         gbc.gridx = 1;
         gbc.gridy = 0;
         MainPanel.add(Date, gbc);
+        
         gbc.gridx = 0;
         gbc.gridy = 1;
         MainPanel.add(Internet_label, gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
         MainPanel.add(Internet, gbc);
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 2;
+        MainPanel.add(Internet_hidden_field, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         MainPanel.add(Water_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 2;
-        MainPanel.add(Water, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 3;
+        MainPanel.add(Water, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        MainPanel.add(Water_hidden_field, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         MainPanel.add(Start_num_elec_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 5;
         MainPanel.add(Start_num_elec, gbc);
+        
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         MainPanel.add(End_num_elec_label,gbc);
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         MainPanel.add(End_num_elec,gbc);
+        
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         MainPanel.add(Electric_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         MainPanel.add(Electric, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        MainPanel.add(Electric_hidden_field, gbc);
+        
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 9;
         MainPanel.add(Gabarge_label, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 9;
         MainPanel.add(Gabarge, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 10;
+        MainPanel.add(Gabarge_hidden_field, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 11;
         MainPanel.add(submitBtb, gbc);
         
         MainFrame.setJMenuBar(MainMenu);
