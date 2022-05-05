@@ -116,9 +116,6 @@ public class Interface implements KeyListener{
         JLabel Total_money_label = new JLabel();
         Total_money_label.setText("Total money");
         JTextField Total_money = new JTextField(20);
-        JTextField Total_money_hidden_field = new JTextField(20);
-        Total_money_hidden_field.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        Total_money_hidden_field.setEditable(false);
         Total_money.setEditable(false);
         Total_money.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -140,8 +137,9 @@ public class Interface implements KeyListener{
                     if(endNum > startNum){
                         int totalNum = endNum - startNum;
                         int totalElectricMoney = ElectricStandardCount * totalNum;
-                        int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
                         Electric.setText(String.valueOf(totalElectricMoney));
+                        int totalMoney = totalElectricMoney + Integer.parseInt(Water.getText()) + Integer.parseInt(Internet.getText()) + Integer.parseInt(Gabarge.getText());
+                        Total_money.setText(standardMoneyDisplay(totalMoney));
                         
                         int Electric_display_hidden = totalElectricMoney;
                         int Water_display_hidden = Integer.parseInt(Water.getText());
@@ -285,10 +283,6 @@ public class Interface implements KeyListener{
         
         gbc.gridx = 1;
         gbc.gridy = 12;
-        MainPanel.add(Total_money_hidden_field, gbc);
-        
-        gbc.gridx = 1;
-        gbc.gridy = 13;
         MainPanel.add(submitBtb, gbc);
         
         MainFrame.setJMenuBar(MainMenu);
