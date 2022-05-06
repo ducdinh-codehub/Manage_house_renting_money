@@ -391,7 +391,6 @@ public class Interface implements KeyListener{
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
     }
     
     
