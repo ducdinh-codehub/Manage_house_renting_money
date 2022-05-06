@@ -10,11 +10,9 @@
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
     </properties>
-    <dependencies>
 	<dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.1</version>
+		<groupId>com.opencsv</groupId>
+		<artifactId>opencsv</artifactId>
+		<version>4.1</version>
 	</dependency>
-    </dependencies>
 </project>

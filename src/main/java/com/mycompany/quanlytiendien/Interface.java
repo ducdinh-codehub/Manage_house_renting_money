@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.mycompany.quanlytiendien;
+import com.opencsv.CSVWriter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -202,8 +203,8 @@ public class Interface implements KeyListener{
                                 bw.write("<br>Tiền nước: "+standardMoneyDisplay(Water_display_hidden));
                                 bw.write("<br><b>Tiền điện ("+String.valueOf(ElectricStandardCount)+" vnd một số):<b>");
                                 bw.write("<br><ul>");
-                                bw.write("<li>Số đầu: "+Start_num_elec.getText()+"</li>");
-                                bw.write("<li>Số cuối: "+End_num_elec.getText()+"</li>");
+                                bw.write("<li>Số đầu: "+startNum+"</li>");
+                                bw.write("<li>Số cuối: "+endNum+"</li>");
                                 bw.write("</ul>");
                                 bw.write("<br>Tổng số tiêu thụ: "+String.valueOf(totalNum));
                                 bw.write("<br>Tổng tiền điện: "+standardMoneyDisplay(Electric_display_hidden));
@@ -224,6 +225,10 @@ public class Interface implements KeyListener{
                                     Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
+                            toCsv(RentingMoney, String.valueOf(startNum), String.valueOf(endNum), 
+                            String.valueOf(Electric_display_hidden), String.valueOf(Internet_display_hidden), String.valueOf(Water_display_hidden),
+                            String.valueOf(Gabarge_display_hidden), String.valueOf(totalMoney), ReceiverName, ReceiverBankAccount, ReceiverBankName, 
+                            Date.getText());
                         }
                     }else{
                         JOptionPane.showMessageDialog(null, "Please check, Start count number cannot greater than End count number");
@@ -360,6 +365,35 @@ public class Interface implements KeyListener{
         }
         return str + " vnds";
     }
+    
+    public void toCsv(String rentingMoney, String startNum, String endNum, String Electric, String Internet, String Water,   
+            String Gabarge, String totalMoney, String receiverName, String receiverAcc, 
+            String receiverBankName, String Date){
+        FileWriter outputfile = null;
+        try {
+            File file = new File("./bill/allBill.csv");
+            // create FileWriter object with file as parameter
+            outputfile = new FileWriter(file, true);
+            // create CSVWriter object filewriter object as parameter
+            CSVWriter writer = new CSVWriter(outputfile);
+            /*String[] header = {"Nha", "So dau", "So cuoi", "Dien", "Mang", "Nuoc", "Rac", "Tong",
+                "Nguoi nhan", "Tk nguoi nhan", "Ten ngan hang",
+                "Ngay/thoi gian"};
+            writer.writeNext(header);*/
+            String data[] = {rentingMoney, startNum, endNum, Electric, Internet, Water, Gabarge, totalMoney, receiverName,receiverAcc,receiverBankName, Date};
+            writer.writeNext(data);
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                outputfile.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
     
     public void setEdittingRentingHomeMoneyInterface(JTextField rentingMoneyField){
         JFrame SubFrame3 = new JFrame("");
