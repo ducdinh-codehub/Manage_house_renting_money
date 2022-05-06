@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -35,16 +36,17 @@ import java.util.logging.Logger;
  */
 
 public class Interface implements KeyListener{
+    
     int ElectricStandardCount = 3500;
     String ReceiverName = "Nguyen Van A";
     String ReceiverBankAccount = "01234567891011";
+    String ReceiverBankName = "MB";
     String RentingMoney = "1700000";
     public void setInterface(){
+       
         JFrame MainFrame = new JFrame("Main frame");
         JPanel MainPanel = new JPanel();
-        
-
-        
+            
         JTextField Date = new JTextField(20);
         Date.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -189,23 +191,27 @@ public class Interface implements KeyListener{
                                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
                                 LocalDateTime now = LocalDateTime.now();
                                 File f = new File("./bill/"+dtf.format(now)+"_renting_bill.htm");
-                                bw = new BufferedWriter(new FileWriter(f));
-                                bw.write("<html><body><h1>Renting House Bill</h1>");
-                                bw.write("<br>Date: "+Date.getText());
-                                bw.write("<br>Renting home money: "+standardMoneyDisplay(Renting_money_display_hidden));
-                                bw.write("<br>Internet money: "+standardMoneyDisplay(Internet_display_hidden));
-                                bw.write("<br>Water money: "+standardMoneyDisplay(Water_display_hidden));
-                                bw.write("<h3>Electric bill ("+String.valueOf(ElectricStandardCount)+" vnd per number):</h3>");
+                                
+                                bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8));
+                                bw.write("<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head>");
+                                //bw.write("<head><meta charset='UTF-8'></head>");
+                                bw.write("<html><body><h1>Hóa đơn tiền nhà</h1>");
+                                bw.write("<br>Ngày/thời gian đóng(năm/tháng/ngày giờ): "+Date.getText());
+                                bw.write("<br>Tiền nhà: "+standardMoneyDisplay(Renting_money_display_hidden));
+                                bw.write("<br>Tiền mạng: "+standardMoneyDisplay(Internet_display_hidden));
+                                bw.write("<br>Tiền nước: "+standardMoneyDisplay(Water_display_hidden));
+                                bw.write("<br><b>Tiền điện ("+String.valueOf(ElectricStandardCount)+" vnd một số):<b>");
                                 bw.write("<br><ul>");
-                                bw.write("<li>Start count number: "+Start_num_elec.getText()+"</li>");
-                                bw.write("<li>End count number: "+End_num_elec.getText()+"</li>");
+                                bw.write("<li>Số đầu: "+Start_num_elec.getText()+"</li>");
+                                bw.write("<li>Số cuối: "+End_num_elec.getText()+"</li>");
                                 bw.write("</ul>");
-                                bw.write("<br>Total count number: "+String.valueOf(totalNum));
-                                bw.write("<br>Total electric money: "+standardMoneyDisplay(Electric_display_hidden));
-                                bw.write("<br>Gabarge money: "+standardMoneyDisplay(Gabarge_display_hidden));
-                                bw.write("<h3>Total money: "+standardMoneyDisplay(totalMoney)+"</h3>");
-                                bw.write("<br>Receiver name: "+ReceiverName);
-                                bw.write("<br>Receiver bank account: "+ReceiverBankAccount);
+                                bw.write("<br>Tổng số tiêu thụ: "+String.valueOf(totalNum));
+                                bw.write("<br>Tổng tiền điện: "+standardMoneyDisplay(Electric_display_hidden));
+                                bw.write("<br>Tiền rác: "+standardMoneyDisplay(Gabarge_display_hidden));
+                                bw.write("<h3>Tổng tiền: "+standardMoneyDisplay(totalMoney)+"</h3>");
+                                bw.write("<br>Người nhận tiền: "+ReceiverName);
+                                bw.write("<br>Tài khoản người nhận tiền: "+ReceiverBankAccount);
+                                bw.write("<br>Tên ngân hàng: "+ReceiverBankName);
                                 bw.write("</body></html>");
                                 bw.close();
 
@@ -343,12 +349,14 @@ public class Interface implements KeyListener{
         while(b != 0){
             a = b % 10;
             b = b / 10;
+           
             str = a + str;
             tmp = a + tmp;
-            if(tmp.length() == 3){
+            if(b != 0 && tmp.length() == 3){
                 str = '.' + str;
                 tmp = "";
             }
+          
         }
         return str + " vnds";
     }
@@ -420,13 +428,22 @@ public class Interface implements KeyListener{
         label_receiver_bank_account.setText("Receiver's banck acc");
         JTextField receiver_bank_Account = new JTextField(15);
         receiver_bank_Account.setEditable(false);
+        JLabel label_receiver_bank_name = new JLabel();
+        label_receiver_bank_name.setText("Bank's name");
+        JTextField receiver_bank_name = new JTextField(15);
+        receiver_bank_name.setText(ReceiverBankName);
+        receiver_bank_name.setEditable(false);
         
         JLabel label_new_name_receiver = new JLabel();
-        label_new_name_receiver.setText("Receiver's name");
+        label_new_name_receiver.setText("New receiver's name");
         JTextField new_name_receiver = new JTextField(15);
         JLabel label_new_receiver_bank_account = new JLabel();
-        label_new_receiver_bank_account.setText("Receiver's banck acc");
+        label_new_receiver_bank_account.setText("New receiver's bank acc");
         JTextField new_receiver_bank_Account = new JTextField(15);
+        JLabel label_new_receiver_bank_name = new JLabel();
+        label_new_receiver_bank_name.setText("New bank's name");
+        JTextField new_receiver_bank_name = new JTextField(15);
+        
        
         new_receiver_bank_Account.addKeyListener(this);
         
@@ -443,15 +460,28 @@ public class Interface implements KeyListener{
         subSubmitBtn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?", "Warning", dialogButton);
-                if(rst == JOptionPane.YES_OPTION){
-                    name_receiver.setText(new_name_receiver.getText());
-                    receiver_bank_Account.setText(new_receiver_bank_Account.getText());
-                    ReceiverName = new_name_receiver.getText();
-                    ReceiverBankAccount = new_receiver_bank_Account.getText();
-                    new_name_receiver.setText("");
-                    new_receiver_bank_Account.setText("");
+                if(new_name_receiver.getText().length() != 0 || new_receiver_bank_Account.getText().length() != 0 || new_receiver_bank_name.getText().length() !=0){
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int rst = JOptionPane.showConfirmDialog(null, "All information will be saved, are you sure ?", "Warning", dialogButton);
+                    if(rst == JOptionPane.YES_OPTION){
+                        if(new_name_receiver.getText().length() != 0){
+                            name_receiver.setText(new_name_receiver.getText());
+                        }
+                        if(new_receiver_bank_Account.getText().length() != 0){
+                            receiver_bank_Account.setText(new_receiver_bank_Account.getText());
+                        }
+                        if(new_receiver_bank_name.getText().length() !=0){
+                            receiver_bank_name.setText(new_receiver_bank_name.getText());
+                        }
+                        ReceiverName = new_name_receiver.getText();
+                        ReceiverBankAccount = new_receiver_bank_Account.getText();
+                        ReceiverBankName = new_receiver_bank_name.getText();
+                        new_name_receiver.setText("");
+                        new_receiver_bank_Account.setText("");
+                        new_receiver_bank_name.setText("");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Please check, cannot find something new");
                 }
             }
         });
@@ -476,22 +506,38 @@ public class Interface implements KeyListener{
         
         gbc.gridx = 0;
         gbc.gridy = 2;
-        SubPanel2.add(label_new_name_receiver,gbc);
+        SubPanel2.add(label_receiver_bank_name, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 2;
+        SubPanel2.add(receiver_bank_name, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        SubPanel2.add(label_new_name_receiver,gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         SubPanel2.add(new_name_receiver, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         SubPanel2.add(label_new_receiver_bank_account,gbc);
         
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         SubPanel2.add(new_receiver_bank_Account, gbc);
         
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        SubPanel2.add(label_new_receiver_bank_name,gbc);
+        
         gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
+        SubPanel2.add(new_receiver_bank_name, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 6;
         SubPanel2.add(subSubmitBtn2, gbc);
         
         SubFrame2.add(SubPanel2);
