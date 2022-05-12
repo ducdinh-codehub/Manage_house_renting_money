@@ -49,7 +49,7 @@
                         $temp= explode('.',$file);
                         $extension = end($temp);
                         if($extension == "htm" or $extension == "html"){
-                            $out[] = "<div class='subItem' style='width: 100%; height: 5%; background-color: gray; color: white;' value='$file'>".$file."</div><br>";
+                            $out[] = "<div class='subItem' style='width: 100%; height: 5%; background-color: gray; color: white;' value='$file' onclick='getContent(this)'>".$file."</div><br>";
                         }
                     }
                     echo json_encode($out);
@@ -64,7 +64,7 @@
                 document.getElementById("display").innerHTML = str;
             }
             function getContent(a){
-                console.log("hello");
+                console.log(a.innerHTML);
             }
             function menuItem3Click(){
                 document.getElementById("screen").style.visibility = 'hidden';
@@ -73,11 +73,6 @@
                 document.getElementById("screen").style.visibility = 'hidden';
             }
         </script>
-        <style>
-            .subItem:hover{
-                background-color: green;
-            }
-        </style>
     </body>
     
 </html>
