@@ -191,7 +191,7 @@ public class Interface implements KeyListener{
                                 JOptionPane.showMessageDialog(null, "Saving success");
                                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
                                 LocalDateTime now = LocalDateTime.now();
-                                File f = new File("./bill/"+dtf.format(now)+"_renting_bill.htm");
+                                File f = new File("./bill/"+dtf.format(now)+"_renting_bill.txt");
                                 
                                 bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8));
                                 bw.write("<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head>");
