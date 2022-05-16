@@ -194,9 +194,8 @@ public class Interface implements KeyListener{
                                 File f = new File("./bill/"+dtf.format(now)+"_renting_bill.txt");
                                 
                                 bw = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8));
-                                bw.write("<head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/></head>");
-                                //bw.write("<head><meta charset='UTF-8'></head>");
-                                bw.write("<html><body><h1>Hóa đơn tiền nhà</h1>");
+         
+                                bw.write("<div style='border: solid; border-color: black; color: white;'><h1>Hóa đơn tiền nhà</h1>");
                                 bw.write("<br>Ngày/thời gian đóng(năm/tháng/ngày giờ): "+Date.getText());
                                 bw.write("<br>Tiền nhà: "+standardMoneyDisplay(Renting_money_display_hidden));
                                 bw.write("<br>Tiền mạng: "+standardMoneyDisplay(Internet_display_hidden));
@@ -213,7 +212,7 @@ public class Interface implements KeyListener{
                                 bw.write("<br>Người nhận tiền: "+ReceiverName);
                                 bw.write("<br>Tài khoản người nhận tiền: "+ReceiverBankAccount);
                                 bw.write("<br>Tên ngân hàng: "+ReceiverBankName);
-                                bw.write("</body></html>");
+                                bw.write("</div>");
                                 bw.close();
 
                             } catch (IOException ex) {

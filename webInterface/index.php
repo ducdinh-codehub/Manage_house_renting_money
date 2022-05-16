@@ -40,12 +40,19 @@
         $(function(){
 
             var idInterval;
+
             $("#menuItem2").click(function (){
                 $("#screen").css("visibility", "visible");
                 idInterval = window.setInterval(function(){
 				    getFiles();
 			    }, 1000); 
 
+            });
+
+            $("#backBtb").click(function (){
+                idInterval = window.setInterval(function(){
+				    getFiles();
+			    }, 1000); 
             });
 
             function getFiles(){
@@ -56,7 +63,7 @@
                         $(data).find("*").each(function(){
                             let file = $(this).attr("href"); 
                             var extension = String(file).split(".")[1];
-                            if(extension == "html" || extension == "htm"){
+                            if( (String(file).split(".").length == 2 && extension == "html") || (String(file).split(".").length == 2 && extension == "htm")){
                                 
                                 file = "<div class='subItem' style='width: 100%; height: 5%; background-color: gray; color: white;'>" + file + "</div><br>";
                                 files = files + file;
@@ -69,11 +76,20 @@
             }
 
             $(document).on("click",".subItem", function(){
-                alert($(this).text());
+                var path = "http://localhost/bill/" + $(this).text();
+                $.ajax({
+                    url: path,
+                    cache: false,
+                }).done(function(html){
+                    clearInterval(idInterval);
+                    $("#backBtb").css("visibility","visible");
+                    $("#display").html(html);
+                })
             });
             
             $("#closeBtb").click(function (){
                 $("#screen").css("visibility","hidden");
+                $("#backBtb").css("visibility","hidden");
                 clearInterval(idInterval);
             });
             $("#menuItem1").click(function (){
@@ -101,6 +117,7 @@
         <div id="screen" style="margin: 2% auto; width: 70%; height:70%; border: 3px solid green;">
             <div id="display" style="width: 100%; height: 95%;"></div>
             <div id='closeBtb' style='width: 20%; height: 5%; background-color: gray; color: white; float: right; text-align: center;'>Close</div>
+            <div id='backBtb' style='width: 20%; height: 5%; background-color: gray; color: white; float: right; text-align: center; margin-right: 2%; visibility: hidden'>Back</div>
         </div>
     </body>
     
